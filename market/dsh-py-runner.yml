@@ -20,13 +20,14 @@ description:
   zh: "在 DSH 侧边栏里做一个 VSCode 风格的 Python 控制台：接管 .py 文件，选好解释器后点「运行」「调试」「停止」，stdout、stderr 和退出码实时流进终端面板；调试用 python -m pdb 启动并转发你输入的 pdb 命令，Ctrl+Enter 运行、Ctrl+Shift+Enter 调试。"
 
 # Optional. A bitmap hosted on GitHub; without it the list falls back to the
-# owner's avatar. Works once the repository exists.
-icon: https://raw.githubusercontent.com/amzingluo/dsh-py-runner/main/.preview/shot-light.png
+# owner's avatar.
+icon: https://raw.githubusercontent.com/amzingluo/dsh-py-runner/main/assets/icon.png
 
 # Optional, and deliberately absent for now: the market installs this plugin
-# straight from the repository (github:amzingluo/dsh-py-runner → codeload tarball,
-# no git required). Add `tarball:` only if you attach a prebuilt .tgz to a
-# GitHub Release — and then keep the asset name version-free, because
-# releases/latest/download/ resolves `latest` at request time but takes the
-# filename literally:
+# straight from the repository (github:amzingluo/dsh-py-runner -> codeload
+# tarball). Note pnpm still runs `git ls-remote` to resolve the ref, so the
+# user's machine needs git for that route. Add `tarball:` only if you attach a
+# prebuilt .tgz to a GitHub Release and want to skip git entirely — and then
+# keep the asset name version-free, because releases/latest/download/ resolves
+# `latest` at request time but takes the filename literally:
 # tarball: https://github.com/amzingluo/dsh-py-runner/releases/latest/download/dsh-py-runner.tgz

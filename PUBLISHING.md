@@ -20,102 +20,81 @@ GitHub 仓库  ──PR(add data/plugins/amzingluo__dsh-py-runner.yml)──▶ 
 
 ---
 
-## 上架前必须满足的三件事
+## 进度（2026-11-15 晚）
 
-| 条件 | 现状 |
+| 事项 | 状态 |
 | --- | --- |
-| `package.json` 声明 `dsh.bundle`，仓库根目录有 `cordis.patch.yml` | ✅ 已有（这是最常见的被拒原因，只有 `dsh.client` 不算可安装） |
-| 仓库创建满 **1 天**（CI 自动检查） | ⏳ 仓库已于 2026-11-15 创建，**11-16 之后**即可提 PR |
-| 仓库有 topic `dsh-plugin` | ✅ 已加（`dsh-plugin` / `python` / `deepseek-harness` / `dsh`） |
+| 插件仓库 | ✅ https://github.com/amzingluo/dsh-py-runner（public，`main`，2 个 commit，20 个文件） |
+| `package.json` 声明 `dsh.bundle` + 根目录 `cordis.patch.yml` | ✅ 已有（这是最常见的被拒原因，只有 `dsh.client` 不算可安装） |
+| topic `dsh-plugin` | ✅ 已加（另有 `python` / `deepseek-harness` / `dsh`） |
+| 市场条目文件 | ✅ `market/dsh-py-runner.yml` 已写好，与目录里其他条目同格式（单引号描述 + `icon`） |
+| fork + 分支 | ✅ fork 出 `amzingluo/awesome-dsh-plugin`，分支 `add-dsh-py-runner` 已提交 `data/plugins/amzingluo__dsh-py-runner.yml` |
+| **提 PR** | ⏳ **等仓库满 1 天**：仓库创建于 `2026-11-15T15:41:57Z`（本地 23:41），**2026-11-16 23:42 之后**才能过 CI |
+| 代码/文档一致性 | ✅ 四个测试文件全绿（19 / 25 / 19 / 31），描述里没写做不到的事 |
 
-仓库地址：https://github.com/amzingluo/dsh-py-runner
+一键开 PR（点开确认标题和正文即可）：
 
-一个还没写进官方文档的坑：`github:` 形式的安装里，pnpm 会先 `git ls-remote` 解析 ref 再去 codeload 下 tarball，
-所以**用户机器必须装 git**（实测在没装 git 的干净环境里直接 `ERR_PNPM_GIT_RESOLVE_FAILED`）。已经在 README 的安装段标注。
-如果想让门槛更低，就再发一个 npm 包（npm 安装不走 git）。
+```
+https://github.com/awesome-dsh-plugin/awesome-dsh-plugin/compare/main...amzingluo:awesome-dsh-plugin:add-dsh-py-runner?expand=1
+```
 
-另外三条软性的：代码真实可跑（✅ 四个测试文件全绿）、描述与代码一致（✅ 现在这份描述没写任何做不到的事）、
-不是纯聚合包（✅ 自己实现了 runner / 路由 / 界面）。
+建议标题：`add dsh-py-runner`；正文：
+
+```markdown
+VSCode-style Python run/debug console for the DSH sidebar.
+
+- Tabs `.py` files into an editor with line numbers + Python syntax highlighting, keeps unsaved state, writes back with `read`/`save` endpoints confined to the session workspace.
+- Run / Debug / Stop with live stdout+stderr+exit code over SSE; Debug runs the script under `python -m pdb` and forwards typed pdb commands; stdin works in normal runs too.
+- Interpreter autodetection (config → env vars → Miniconda/Anaconda → DSH bundled python → PATH), GBK/UTF-8 sniffing with a read-only guard for non-UTF-8 files.
+- Zero dependencies, no build step; `github:amzingluo/dsh-py-runner` installs in ~3 s. Tests: `test/{smoke,host,highlight,ui}.mjs`.
+```
 
 ---
 
-## 1. 建仓库
+## 一个还没写进官方文档的坑：`github:` 安装需要 git
 
-⚠️ **仓库根目录必须是 `dsh-py-runner\`，不是 Obsidian vault。** 现在插件在
-`C:\Users\17871\Documents\Obsidian Vault\probability\dsh-py-runner`；如果在 vault 根目录
-`git init` 再 `git add .`，整个笔记库都会被推上去。
+市场卡片对没有 npm、没有 tarball 的条目给出的命令是
+`dsh plugin --profile web add github:<owner>/<repo>`。实测（本机 pnpm 11.28.5 / node 24）：
 
-就地建仓库是安全的（这个子目录里没有笔记文件，`.gitignore` 也备好了）：
+- pnpm **会先跑 `git ls-remote`** 解析 ref，再去 codeload 下 tarball —— 所以**用户机器必须装 git**，
+  否则直接 `[ERR_PNPM_GIT_RESOLVE_FAILED] ... git ls-remote failed: 'git' 不是内部或外部命令`。
+- 补上 git 之后 3.2 秒装完，`node_modules/dsh-py-runner` 7 个文件，`dsh.bundle` 就位。
 
-```powershell
-cd "C:\Users\17871\Documents\Obsidian Vault\probability\dsh-py-runner"
-git init -b main
-git add .
-git commit -m "dsh-py-runner 0.1.0"
-git remote add origin https://github.com/amzingluo/dsh-py-runner.git
-git push -u origin main
-```
+（`dshmarket/lib/accelerate.js:5` 的注释说 pnpm 不用 `git clone`，这句只说对了一半：它确实不 clone，但要用 git 解析。）
 
-> 这台机器目前**没有 git**，先装 [Git for Windows](https://git-scm.com/download/win)。
->
-> 想更干净可以把目录搬到 `D:\code\dsh-py-runner` 再建仓库；搬走后记得用
-> `pnpm add link:` 重新指一次 profile 里的链接，否则 DSH 里跑的还是旧路径。
-
-然后：
-
-1. 把 `amzingluo` 换成你的 GitHub 用户名——`package.json` 的 `repository`/`homepage`/`bugs`、
-   `market/dsh-py-runner.yml` 的 `url`/`name`/`icon`、本文件里的命令。
-2. 仓库首页 → About 齿轮 → Topics 加 **`dsh-plugin`**。
-3. 等满一天。CI 查的是仓库创建时间，不是首个 commit 时间。
+已经在 README 的安装段标注。想让门槛更低就再发个 npm 包（npm 安装不走 git）。
 
 ---
 
-## 2. 提 PR（只加一个文件）
+## PR 注意点（来自 contributing.md）
 
-在 awesome-dsh-plugin 提 PR，**只新增**一个文件：
-
-```
-data/plugins/amzingluo__dsh-py-runner.yml
-```
-
-内容直接照抄 [market/dsh-py-runner.yml](market/dsh-py-runner.yml)（`amzingluo` 换掉）。
-字段就四个必需的：`url`、`name`、`category`、`description.en`；`description.zh` 可选（缺了维护者会补）。
-`category: dev` —— 分类选错不会被打回，维护者直接改。
-
-几条容易踩的：
+只新增一个文件 `data/plugins/amzingluo__dsh-py-runner.yml`，字段四个必需的：`url`、`name`、`category`、`description.en`。
 
 - **不要手改 README。** 两个 README 由 `scripts/generate-readme.mjs` 从 YAML 生成。
-- **不要动别人的条目。** PR 里出现无关条目的改动会被 CI 单独列出来质问。
-- `description` 里出现 `: ` 必须加引号（我们的已经用双引号包好）。
-- 描述只讲功能、不带营销词。写了 “46 tools” 就得真有 46 个。
-
-CI 绿只是前置条件，之后维护者会真的读代码。
+- **不要动别人的条目。** PR 里出现无关改动会被 CI 单独列出来质问。
+- `description` 里出现 `: ` 必须加引号；目录里惯用单引号，描述内部有 `'` 就写成 `''`。
+- `category` 选错不会被打回（维护者直接改）；本插件是 `dev`（Development & Runtime）。
+- `icon` 是可选的 GitHub 托管位图，缺省回落到作者头像；我们用的是仓库里的 `assets/icon.png`（512×512 PNG）。
+- 描述只讲功能、不带营销词。写了 "46 tools" 就得真有 46 个。
+- CI 绿只是前置条件，之后维护者会真的读代码。
 
 ---
 
-## 3. 上架后用户怎么装
+## 上架后用户怎么装
 
-市场卡片给出的命令是（无需 git、无需 npm）：
+市场卡片给出的就是（需要 git，见上）：
 
 ```powershell
 dsh plugin --profile web add github:amzingluo/dsh-py-runner
 ```
 
-这是列表生成器对“没有 npm、没有 tarball”的条目写出的固定格式——市场里 10974 个条目中有
-**4214 个**都属于这种形态，所以这条路是主流路径，不是什么降级方案。
-
-pnpm 拿到的是 codeload 的 tarball（不调用 `git clone`），本包零依赖、没有构建脚本，
-所以这一步就是下载 + 解压。`dsh.bundle` → 市场装上就生效。
-
-想自己先验证这条路径，仓库推上去之后在自己机器上跑一遍同样的命令即可（把 `--profile web`
-换成你本地 profile 的名字，桌面端是 `desktop`）。
+市场里 11137 个条目中有 4214 个都是这种“没有 npm、没有 tarball”的形态，这是主流路径，不是降级方案。
 
 ---
 
 ## 可选：让安装更顺（不是上架必需）
 
-1. **发 npm**（预构建安装可跳过 `allowBuilds` 构建授权，市场卡片会直接给
-   `add dsh-py-runner`）：`dsh-py-runner` 这个包名目前是空的。
+1. **发 npm**（市场卡片会直接给 `add dsh-py-runner`，安装不走 git）：`dsh-py-runner` 这个包名目前是空的。
 
    ```powershell
    $node = "C:\Users\17871\.dsh\dsh-runtimes\dsh-primary-runtime\dependencies\node\bin\node.exe"
@@ -140,7 +119,7 @@ git tag v0.1.1 && git push --tags
 ```
 
 市场按仓库和 npm 版本自动刷新（`version`、`stars`、`downloads` 都是抓的），**不需要再提 PR**；
-只有改了描述、分类、图标这类条目内容时才回去改那个 YAML。
+只有改了描述、分类、图标这类条目内容时才回去改那个 YAML（下一次提 PR 会被 CI 查重复）。
 
 ---
 

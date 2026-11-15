@@ -25,8 +25,14 @@ GitHub 仓库  ──PR(add data/plugins/amzingluo__dsh-py-runner.yml)──▶ 
 | 条件 | 现状 |
 | --- | --- |
 | `package.json` 声明 `dsh.bundle`，仓库根目录有 `cordis.patch.yml` | ✅ 已有（这是最常见的被拒原因，只有 `dsh.client` 不算可安装） |
-| 仓库创建满 **1 天**（CI 自动检查） | ❌ 要等 |
-| 仓库有 topic `dsh-plugin` | ❌ 建仓库后加上 |
+| 仓库创建满 **1 天**（CI 自动检查） | ⏳ 仓库已于 2026-11-15 创建，**11-16 之后**即可提 PR |
+| 仓库有 topic `dsh-plugin` | ✅ 已加（`dsh-plugin` / `python` / `deepseek-harness` / `dsh`） |
+
+仓库地址：https://github.com/amzingluo/dsh-py-runner
+
+一个还没写进官方文档的坑：`github:` 形式的安装里，pnpm 会先 `git ls-remote` 解析 ref 再去 codeload 下 tarball，
+所以**用户机器必须装 git**（实测在没装 git 的干净环境里直接 `ERR_PNPM_GIT_RESOLVE_FAILED`）。已经在 README 的安装段标注。
+如果想让门槛更低，就再发一个 npm 包（npm 安装不走 git）。
 
 另外三条软性的：代码真实可跑（✅ 四个测试文件全绿）、描述与代码一致（✅ 现在这份描述没写任何做不到的事）、
 不是纯聚合包（✅ 自己实现了 runner / 路由 / 界面）。

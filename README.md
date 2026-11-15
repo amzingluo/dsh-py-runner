@@ -42,6 +42,8 @@ dsh plugin --profile desktop add "file:C:/Users/17871/Documents/Obsidian Vault/p
 
 然后把 `dsh-py-runner` 加进 `C:\Users\17871\.dsh\profiles\desktop\package.json` 的 `dsh.profile.bundles` 数组，重启 DSH。
 
+> 第 1 种装法要求机器上装了 **git**（pnpm 会用 `git ls-remote` 解析仓库再下 tarball，没有 git 会报 `ERR_PNPM_GIT_RESOLVE_FAILED`）。Windows 上 `winget install Git.Git` 即可。
+
 > 想上架 DSH 市场看 [PUBLISHING.md](PUBLISHING.md)：市场读的是 awesome-dsh-plugin 的列表，收录靠一个 YAML PR，npm 不是必需项。
 
 ## 安全边界

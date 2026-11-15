@@ -1,0 +1,14 @@
+# dsh-py-runner bundle patch
+#
+# Mounts the plugin's host half. The client half is picked up from
+# `exports["./client"]` (declared in package.json's `dsh.client`).
+#
+# Override the interpreter from the profile's own patch layer if the default
+# candidates are wrong for this machine:
+#
+#   - id: py-runner
+#     config:
+#       python: 'C:\path\to\python.exe'
+- insert:
+    - id: py-runner
+      name: 'dsh-py-runner'

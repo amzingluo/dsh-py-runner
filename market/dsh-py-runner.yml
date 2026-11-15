@@ -1,33 +1,7 @@
-# Catalog entry for the DSH market (awesome-dsh-plugin).
-#
-# The in-app market shows exactly what this file becomes: plugins.json is
-# generated from data/plugins/*.yml in
-# https://github.com/awesome-dsh-plugin/awesome-dsh-plugin
-#
-# To list the plugin, open a PR there that adds ONE file:
-#   data/plugins/<owner>__<repo>.yml      e.g. data/plugins/amzingluo__dsh-py-runner.yml
-# Never edit the generated READMEs by hand.
-#
-# Fields below are the required ones (url / name / category / description.en);
-# everything else is optional.
-
 url: https://github.com/amzingluo/dsh-py-runner
 name: amzingluo/dsh-py-runner
 category: dev
-
-description:
-  en: "A VSCode-style Python console in the DSH sidebar: it takes over .py files, lets you pick an interpreter, and runs the file with Run / Debug / Stop while stdout, stderr and the exit code stream into a terminal panel. Debug launches python -m pdb and forwards typed commands; Ctrl+Enter runs, Ctrl+Shift+Enter debugs."
-  zh: "在 DSH 侧边栏里做一个 VSCode 风格的 Python 控制台：接管 .py 文件，选好解释器后点「运行」「调试」「停止」，stdout、stderr 和退出码实时流进终端面板；调试用 python -m pdb 启动并转发你输入的 pdb 命令，Ctrl+Enter 运行、Ctrl+Shift+Enter 调试。"
-
-# Optional. A bitmap hosted on GitHub; without it the list falls back to the
-# owner's avatar.
 icon: https://raw.githubusercontent.com/amzingluo/dsh-py-runner/main/assets/icon.png
-
-# Optional, and deliberately absent for now: the market installs this plugin
-# straight from the repository (github:amzingluo/dsh-py-runner -> codeload
-# tarball). Note pnpm still runs `git ls-remote` to resolve the ref, so the
-# user's machine needs git for that route. Add `tarball:` only if you attach a
-# prebuilt .tgz to a GitHub Release and want to skip git entirely — and then
-# keep the asset name version-free, because releases/latest/download/ resolves
-# `latest` at request time but takes the filename literally:
-# tarball: https://github.com/amzingluo/dsh-py-runner/releases/latest/download/dsh-py-runner.tgz
+description:
+  en: 'VSCode-style Python console in the DSH sidebar: it opens .py files in an editor with line numbers and Python syntax highlighting, lets you pick the interpreter, and runs the file with Run / Debug / Stop while stdout, stderr and the exit code stream into a terminal panel below. Debug launches the script under python -m pdb and forwards the commands you type, and stdin works during normal runs too. Ctrl+Enter runs, Ctrl+Shift+Enter debugs.'
+  zh: 'DSH 侧边栏里的 VSCode 风格 Python 控制台：用它打开 .py 文件就是一个带行号和 Python 语法高亮的编辑器，选好解释器后点「运行」「调试」「停止」，stdout、stderr 和退出码会实时流进下方的终端面板。调试通过 python -m pdb 启动并转发你输入的 pdb 命令，普通运行时也能向程序写标准输入。Ctrl+Enter 运行，Ctrl+Shift+Enter 调试。'

@@ -1,9 +1,9 @@
 {
   "name": "dsh-py-runner",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "license": "MIT",
   "author": "dsh-py-runner contributors",
-  "description": "VSCode-style Python run/debug console for the DSH sidebar: open a .py file, hit Run or Debug, watch the output stream live.",
+  "description": "VSCode-style Python console in the DSH sidebar: edit and run .py files, and debug them over DAP (debugpy) with breakpoints, stepping, call stack, variables and watch expressions.",
   "type": "module",
   "main": "./lib/index.js",
   "exports": {

@@ -8,7 +8,8 @@
   --dsw-alias-bg-layer-1:#1b1c20; --dsw-alias-bg-layer-2:rgba(255,255,255,.08); --dsw-alias-bg-layer-3:rgba(255,255,255,.16);
   --dsw-alias-border-l1:rgba(255,255,255,.13); --dsw-alias-border-l2:rgba(255,255,255,.26);
   --dsw-alias-brand-primary:#5c9dff;
-  --dsw-alias-state-success-primary:#4ec38a; --dsw-alias-state-error-primary:#ff6b6b;}
+  --dsw-alias-state-success-primary:#4ec38a; --dsw-alias-state-error-primary:#ff6b6b;
+  --dsw-alias-state-warn-primary:#e0a53a;}
   .pyr{display:flex;flex-direction:column;height:100%;min-height:0;font-size:12.5px;color:var(--dsw-alias-label-primary,#1f2328);background:transparent}
 .pyr *{box-sizing:border-box}
 .pyr ::-webkit-scrollbar{width:10px;height:10px}
@@ -96,10 +97,61 @@ border:1px solid color-mix(in srgb,var(--dsw-alias-brand-primary,#4d9fff) 22%,tr
 .pyr-empty strong{color:var(--dsw-alias-label-primary,#1f2328);font-size:13px}
 .pyr-kbd{display:inline-block;padding:0 5px;margin:0 1px;border-radius:4px;font-family:ui-monospace, SFMono-Regular, Consolas, "Courier New", monospace;font-size:11px;
 color:var(--dsw-alias-label-secondary,#6b7280);background:var(--dsw-alias-bg-layer-2,rgba(127,127,127,.12))}
+.pyr-upper{display:flex;flex:1 1 auto;min-height:0}
+.pyr-edit{display:flex;flex-direction:column;flex:1 1 auto;min-width:0;min-height:0}
+.pyr-aside{flex:0 0 auto;width:296px;max-width:46%;display:flex;flex-direction:column;overflow:auto;
+border-left:1px solid var(--dsw-alias-border-l1,rgba(127,127,127,.18));
+background:var(--dsw-alias-bg-layer-1,rgba(127,127,127,.03))}
+.pyr-sec{flex:0 0 auto;border-bottom:1px solid var(--dsw-alias-border-l1,rgba(127,127,127,.12))}
+.pyr-sec h4{margin:0;display:flex;align-items:center;gap:6px;padding:6px 10px 3px;font-size:10.5px;font-weight:700;
+letter-spacing:.07em;text-transform:uppercase;color:var(--dsw-alias-label-secondary,#6b7280)}
+.pyr-sec-body{padding:0 4px 7px;max-height:230px;overflow-y:auto;overflow-x:hidden}
+.pyr-frame{display:flex;align-items:baseline;gap:6px;width:100%;padding:3px 7px;border:none;border-radius:6px;
+background:transparent;color:inherit;font:inherit;font-size:11.5px;text-align:left;cursor:pointer}
+.pyr-frame:hover{background:var(--dsw-alias-bg-layer-2,rgba(127,127,127,.12))}
+.pyr-frame.is-active{background:color-mix(in srgb,var(--dsw-alias-brand-primary,#4d9fff) 15%,transparent)}
+.pyr-frame .pyr-where{flex:1 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pyr-frame .pyr-line{font-variant-numeric:tabular-nums;color:var(--dsw-alias-label-secondary,#6b7280);font-size:10.5px}
+.pyr-var{display:flex;align-items:baseline;gap:6px;width:100%;box-sizing:border-box;padding:2px 7px;border:none;border-radius:5px;
+background:transparent;color:inherit;font-family:ui-monospace, SFMono-Regular, Consolas, "Courier New", monospace;font-size:11.5px;text-align:left}
+.pyr-var.is-ref{cursor:pointer}
+.pyr-var.is-ref:hover{background:var(--dsw-alias-bg-layer-2,rgba(127,127,127,.12))}
+.pyr-var .pyr-k{color:var(--dsw-alias-label-secondary,#6b7280);flex:0 0 auto}
+.pyr-var .pyr-v{flex:1 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pyr-var .pyr-t{color:var(--dsw-alias-label-secondary,#6b7280);font-size:10px;flex:0 0 auto}
+.pyr-var.is-error .pyr-v{color:var(--dsw-alias-state-error-primary,#e5484d)}
+.pyr-sec-empty{padding:1px 10px 6px;font-size:11.5px;color:var(--dsw-alias-label-secondary,#6b7280)}
+.pyr-watch{display:flex;gap:4px;padding:0 6px 6px}
+.pyr-watch input{flex:1 1 auto;min-width:0;height:24px;padding:0 7px;font:inherit;font-size:11.5px;border-radius:6px;
+font-family:ui-monospace, SFMono-Regular, Consolas, "Courier New", monospace;color:var(--dsw-alias-label-primary,#1f2328);
+background:var(--dsw-alias-bg-layer-2,rgba(127,127,127,.08));
+border:1px solid var(--dsw-alias-border-l1,rgba(127,127,127,.2));outline:none}
+.pyr-watch input:focus{border-color:var(--dsw-alias-brand-primary,#4d9fff)}
+.pyr-debugbar{display:flex;align-items:center;gap:6px;flex-wrap:wrap;flex:0 0 auto;padding:5px 12px;
+border-bottom:1px solid color-mix(in srgb,var(--dsw-alias-brand-primary,#4d9fff) 25%,transparent);
+background:color-mix(in srgb,var(--dsw-alias-brand-primary,#4d9fff) 7%,transparent)}
+.pyr-debugbar .pyr-why{font-size:11.5px;color:var(--dsw-alias-state-error-primary,#e5484d);
+max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pyr-gutter-clip{flex:0 0 auto;overflow:hidden;
+border-right:1px solid var(--dsw-alias-border-l1,rgba(127,127,127,.18));
+background:var(--dsw-alias-bg-layer-1,rgba(127,127,127,.04))}
+.pyr-gutter{padding:0 0 24px;font-family:ui-monospace, SFMono-Regular, Consolas, "Courier New", monospace;font-size:12px;line-height:19px;
+color:var(--dsw-alias-label-secondary,#6b7280);user-select:none}
+.pyr-ln{position:relative;height:19px;line-height:19px;padding-right:9px;text-align:right;cursor:pointer}
+.pyr-ln:hover{background:var(--dsw-alias-bg-layer-2,rgba(127,127,127,.14))}
+.pyr-ln-num{opacity:.78}
+.pyr-ln.is-bp .pyr-ln-num{opacity:1;color:var(--dsw-alias-state-error-primary,#e5484d);font-weight:700}
+.pyr-ln.is-bp::before{content:"";position:absolute;left:5px;top:6px;width:8px;height:8px;border-radius:50%;
+background:var(--dsw-alias-state-error-primary,#e5484d)}
+.pyr-ln.is-cur .pyr-ln-num{opacity:1;color:var(--dsw-alias-brand-primary,#4d9fff);font-weight:700}
+.pyr-cur{position:absolute;left:0;right:0;height:19px;pointer-events:none;z-index:0;
+background:color-mix(in srgb,var(--dsw-alias-state-warn-primary,#ffb86b) 16%,transparent);
+box-shadow:inset 2px 0 0 var(--dsw-alias-state-warn-primary,#ffb86b)}
   .stage{flex:1;display:flex;flex-direction:column;padding:0}
 </style>
 <div class="stage">
   <div class="pyr">
+
     <div class="pyr-bar">
       <div class="pyr-title">
         <span class="pyr-dot"></span>
@@ -111,33 +163,21 @@ color:var(--dsw-alias-label-secondary,#6b7280);background:var(--dsw-alias-bg-lay
       <span class="pyr-pill is-ok"><i></i>已完成</span>
       <span class="pyr-time">1.24 s</span>
       <button class="pyr-btn pyr-primary"><svg viewBox="0 0 16 16" width="13" height="13"><path d="M5.3 3.1v9.8L13 8z" fill="currentColor"/></svg>运行</button>
-      <button class="pyr-btn"><svg viewBox="0 0 16 16" width="13" height="13"><path d="M8 1.7a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5z" fill="currentColor"/><path d="M6.1 4.3h3.8a1.7 1.7 0 0 1 1.7 1.7v4.2a3.6 3.6 0 1 1-7.2 0V6a1.7 1.7 0 0 1 1.7-1.7z" fill="currentColor"/><path d="M3.1 6.1h1.8v1.3H3.1zM11.1 6.1h1.8v1.3h-1.8zM3.5 9.7h1.6V11H3.5zM10.9 9.7h1.6V11h-1.6z" fill="currentColor"/></svg>调试</button>
+      <button class="pyr-btn"><svg viewBox="0 0 16 16" width="13" height="13"><path d="M8 1.7a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5z" fill="currentColor"/><path d="M6.1 4.3h3.8a1.7 1.7 0 0 1 1.7 1.7v4.2a3.6 3.6 0 1 1-7.2 0V6a1.7 1.7 0 0 1 1.7-1.7z" fill="currentColor"/></svg>调试</button>
       <button class="pyr-btn pyr-danger" disabled><svg viewBox="0 0 16 16" width="13" height="13"><path d="M4.7 4.7h6.6v6.6H4.7z" fill="currentColor"/></svg>停止</button>
       <button class="pyr-btn pyr-ghost"><svg viewBox="0 0 16 16" width="13" height="13"><path d="M6.6 11.3 3.6 8.3l1.2-1.2 1.8 1.8 4.6-4.6 1.2 1.2z" fill="currentColor"/></svg>保存</button>
       <button class="pyr-btn pyr-ghost pyr-btn-icon" title="刷新"><svg viewBox="0 0 16 16" width="13" height="13"><path d="M8 2.4V4.2a3.8 3.8 0 1 1-3.7 4.6l1.7-.4A2.1 2.1 0 1 0 8 6v1.8l3-2.7z" fill="currentColor"/></svg></button>
     </div>
     <div class="pyr-main">
-      <div style="flex:1 1 auto;min-height:120px;display:flex;overflow:hidden">
-        <div style="flex:0 0 auto;padding:10px 8px 10px 12px;text-align:right;font-family:ui-monospace,Consolas,monospace;font-size:12px;line-height:19px;color:#6b7280;white-space:pre;user-select:none;border-right:1px solid rgba(127,127,127,.22);background:var(--dsw-alias-bg-layer-1)">1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19</div>
-        <pre style="flex:1 1 auto;margin:0;padding:10px 12px;font-family:ui-monospace,Consolas,monospace;font-size:13px;line-height:19px;white-space:pre;overflow:hidden">
+      <div class="pyr-upper">
+        <div class="pyr-edit">
+<div style="flex:1 1 auto;min-height:0;display:flex;overflow:hidden">
+  <div class="pyr-gutter-clip" style="min-width:41px">
+    <div class="pyr-gutter" style="padding:10px 0 24px"><div class="pyr-ln"><span class="pyr-ln-num">1</span></div><div class="pyr-ln"><span class="pyr-ln-num">2</span></div><div class="pyr-ln"><span class="pyr-ln-num">3</span></div><div class="pyr-ln"><span class="pyr-ln-num">4</span></div><div class="pyr-ln"><span class="pyr-ln-num">5</span></div><div class="pyr-ln"><span class="pyr-ln-num">6</span></div><div class="pyr-ln"><span class="pyr-ln-num">7</span></div><div class="pyr-ln"><span class="pyr-ln-num">8</span></div><div class="pyr-ln"><span class="pyr-ln-num">9</span></div><div class="pyr-ln"><span class="pyr-ln-num">10</span></div><div class="pyr-ln"><span class="pyr-ln-num">11</span></div><div class="pyr-ln"><span class="pyr-ln-num">12</span></div><div class="pyr-ln"><span class="pyr-ln-num">13</span></div><div class="pyr-ln"><span class="pyr-ln-num">14</span></div><div class="pyr-ln"><span class="pyr-ln-num">15</span></div><div class="pyr-ln"><span class="pyr-ln-num">16</span></div><div class="pyr-ln"><span class="pyr-ln-num">17</span></div></div>
+  </div>
+  <div style="flex:1 1 auto;position:relative;display:flex;overflow:hidden">
+    
+    <pre style="flex:1 1 auto;margin:0;padding:10px 12px;font-family:ui-monospace,Consolas,monospace;font-size:13px;line-height:19px;white-space:pre;overflow:hidden">
 <span style="color:#9b5de5">from</span> <span style="color:#1f8a9c">datetime</span> <span style="color:#9b5de5">import</span> datetime
 <span style="color:#9b5de5">import</span> sqlite3
 <span style="color:#9b5de5">from</span> model_daily_basic <span style="color:#9b5de5">import</span> *
@@ -156,6 +196,8 @@ color:var(--dsw-alias-label-secondary,#6b7280);background:var(--dsw-alias-bg-lay
         <span style="color:#9b5de5">raise</span> <span style="color:#1f8a9c">ValueError</span>(<span style="color:#2f9e6f">f"no rows for {symbols}"</span>)
     <span style="color:#9b5de5">return</span> df.<span style="color:#2f6fb0">tail</span>(days)
 </pre>
+  </div>
+</div></div>
       </div>
       <div class="pyr-logbar">
         <span>运行日志</span>

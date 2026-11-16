@@ -1,0 +1,258 @@
+<!doctype html>
+<meta charset="utf-8">
+<style>
+  html,body{margin:0;height:100%;background:#141518}
+  body{display:flex}
+  :root{
+  --dsw-alias-label-primary:#e7e8ea; --dsw-alias-label-secondary:#9aa0a8;
+  --dsw-alias-bg-layer-1:#1b1c20; --dsw-alias-bg-layer-2:rgba(255,255,255,.08); --dsw-alias-bg-layer-3:rgba(255,255,255,.16);
+  --dsw-alias-border-l1:rgba(255,255,255,.13); --dsw-alias-border-l2:rgba(255,255,255,.26);
+  --dsw-alias-brand-primary:#5c9dff;
+  --dsw-alias-state-success-primary:#4ec38a; --dsw-alias-state-error-primary:#ff6b6b;
+  --dsw-alias-state-warn-primary:#e0a53a;}
+  .pyr{display:flex;flex-direction:column;height:100%;min-height:0;font-size:12.5px;color:var(--dsw-alias-label-primary,#1f2328);background:transparent}
+.pyr *{box-sizing:border-box}
+.pyr ::-webkit-scrollbar{width:10px;height:10px}
+.pyr ::-webkit-scrollbar-track{background:transparent}
+.pyr ::-webkit-scrollbar-thumb{background:rgba(127,127,127,.3);border:3px solid transparent;background-clip:content-box;border-radius:8px}
+.pyr ::-webkit-scrollbar-thumb:hover{background:rgba(127,127,127,.5);background-clip:content-box}
+.pyr-bar{display:flex;align-items:center;gap:6px;flex-wrap:wrap;padding:8px 12px;flex:0 0 auto;
+border-bottom:1px solid var(--dsw-alias-border-l1,rgba(127,127,127,.18));
+background:var(--dsw-alias-bg-layer-1,rgba(127,127,127,.04))}
+.pyr-spacer{flex:1 1 auto}
+.pyr-title{display:flex;align-items:center;gap:7px;min-width:0;margin-right:2px;font-size:12.5px;font-weight:600}
+.pyr-title .pyr-name{max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pyr-dot{flex:0 0 auto;width:7px;height:7px;border-radius:50%;background:var(--dsw-alias-brand-primary,#4d9fff);
+box-shadow:0 0 0 3px color-mix(in srgb,var(--dsw-alias-brand-primary,#4d9fff) 16%,transparent)}
+.pyr-tag{flex:0 0 auto;padding:1px 6px;border-radius:5px;font-size:10px;font-weight:700;letter-spacing:.05em;
+text-transform:uppercase;color:var(--dsw-alias-label-secondary,#6b7280);background:var(--dsw-alias-bg-layer-2,rgba(127,127,127,.12))}
+.pyr-btn{height:28px;display:inline-flex;align-items:center;justify-content:center;gap:5px;padding:0 11px;
+font:inherit;font-size:12px;font-weight:500;line-height:1;color:var(--dsw-alias-label-primary,#1f2328);
+background:var(--dsw-alias-bg-layer-2,rgba(127,127,127,.09));border:1px solid transparent;border-radius:7px;
+cursor:pointer;white-space:nowrap;user-select:none;
+transition:background .12s ease,border-color .12s ease,color .12s ease,filter .12s ease,transform .06s ease}
+.pyr-btn:hover:not(:disabled){background:var(--dsw-alias-bg-layer-3,rgba(127,127,127,.2))}
+.pyr-btn:active:not(:disabled){transform:translateY(1px)}
+.pyr-btn:focus-visible{outline:2px solid var(--dsw-alias-brand-primary,#4d9fff);outline-offset:1px}
+.pyr-btn:disabled{opacity:.4;cursor:default}
+.pyr-btn svg{width:13px;height:13px;flex:0 0 auto}
+.pyr-btn-icon{padding:0 7px}
+.pyr-primary{background:var(--dsw-alias-brand-primary,#4d9fff);color:#fff;box-shadow:0 1px 2px rgba(0,0,0,.16)}
+.pyr-primary:hover:not(:disabled){background:var(--dsw-alias-brand-primary,#4d9fff);filter:brightness(1.07)}
+.pyr-danger{background:transparent;color:var(--dsw-alias-state-error-primary,#e5484d);border-color:color-mix(in srgb,var(--dsw-alias-state-error-primary,#e5484d) 40%,transparent)}
+.pyr-danger:hover:not(:disabled){background:color-mix(in srgb,var(--dsw-alias-state-error-primary,#e5484d) 12%,transparent)}
+.pyr-ghost{background:transparent}
+.pyr-ghost:hover:not(:disabled){background:var(--dsw-alias-bg-layer-2,rgba(127,127,127,.12))}
+.pyr-select{height:28px;max-width:220px;padding:0 26px 0 9px;font:inherit;font-size:12px;border-radius:7px;
+color:var(--dsw-alias-label-primary,#1f2328);background-color:var(--dsw-alias-bg-layer-1,rgba(127,127,127,.06));
+border:1px solid var(--dsw-alias-border-l1,rgba(127,127,127,.22));cursor:pointer;appearance:none;outline:none;
+background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path fill='%23848a94' d='M4.2 6.2h7.6L8 10.6z'/></svg>");
+background-repeat:no-repeat;background-position:right 7px center;background-size:11px}
+.pyr-select:hover{border-color:var(--dsw-alias-border-l2,rgba(127,127,127,.4))}
+.pyr-select:focus-visible{outline:2px solid var(--dsw-alias-brand-primary,#4d9fff);outline-offset:1px}
+.pyr-pill{display:inline-flex;align-items:center;gap:5px;height:24px;padding:0 9px;border-radius:999px;
+font-size:11.5px;font-weight:500;white-space:nowrap;background:var(--dsw-alias-bg-layer-2,rgba(127,127,127,.12));
+color:var(--dsw-alias-label-secondary,#6b7280)}
+.pyr-pill i{display:block;width:6px;height:6px;border-radius:50%;background:currentColor}
+.pyr-pill.is-run{color:var(--dsw-alias-brand-primary,#4d9fff)}
+.pyr-pill.is-ok{color:var(--dsw-alias-state-success-primary,#2f9e6f)}
+.pyr-pill.is-error{color:var(--dsw-alias-state-error-primary,#e5484d)}
+.pyr-pill.is-live i{animation:pyr-pulse 1.4s ease-in-out infinite}
+@keyframes pyr-pulse{0%,100%{opacity:1}50%{opacity:.25}}
+.pyr-time{font-size:11.5px;color:var(--dsw-alias-label-secondary,#6b7280);font-variant-numeric:tabular-nums}
+.pyr-main{flex:1 1 auto;min-height:0;display:flex;flex-direction:column}
+.pyr-logbar{display:flex;align-items:center;gap:8px;flex:0 0 auto;padding:4px 12px;
+font-size:10.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;
+color:var(--dsw-alias-label-secondary,#6b7280);background:var(--dsw-alias-bg-layer-1,rgba(127,127,127,.04));
+border-top:1px solid var(--dsw-alias-border-l1,rgba(127,127,127,.18));border-bottom:1px solid var(--dsw-alias-border-l1,rgba(127,127,127,.1))}
+.pyr-logbar .pyr-file{font-size:11px;font-weight:400;letter-spacing:0;text-transform:none;
+max-width:340px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pyr-log{flex:0 0 auto;height:232px;overflow:auto;padding:8px 14px 12px;font-size:12px;line-height:18px;
+font-family:ui-monospace, SFMono-Regular, Consolas, "Courier New", monospace;white-space:pre-wrap;word-break:break-word;
+background:var(--dsw-alias-bg-layer-1,rgba(127,127,127,.03))}
+.pyr-empty-chunk{color:var(--dsw-alias-label-secondary,#6b7280);font-family:inherit}
+.pyr-stdin{display:flex;align-items:center;gap:8px;flex:0 0 auto;padding:6px 12px;
+border-top:1px solid var(--dsw-alias-border-l1,rgba(127,127,127,.18))}
+.pyr-stdin input{flex:1 1 auto;min-width:0;height:28px;padding:0 10px;font:inherit;font-size:12px;border-radius:7px;
+font-family:ui-monospace, SFMono-Regular, Consolas, "Courier New", monospace;color:var(--dsw-alias-label-primary,#1f2328);
+background:var(--dsw-alias-bg-layer-1,rgba(127,127,127,.06));
+border:1px solid var(--dsw-alias-border-l1,rgba(127,127,127,.22));outline:none}
+.pyr-stdin input:focus{border-color:var(--dsw-alias-brand-primary,#4d9fff)}
+.pyr-stdin-tag{font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;
+padding:2px 6px;border-radius:5px;color:var(--dsw-alias-brand-primary,#4d9fff);
+background:color-mix(in srgb,var(--dsw-alias-brand-primary,#4d9fff) 12%,transparent)}
+.pyr-note{display:flex;gap:8px;align-items:flex-start;flex:0 0 auto;margin:8px 12px 0;padding:7px 10px;
+font-size:12px;line-height:1.5;border-radius:8px;
+border:1px solid color-mix(in srgb,var(--dsw-alias-brand-primary,#4d9fff) 35%,transparent);
+background:color-mix(in srgb,var(--dsw-alias-brand-primary,#4d9fff) 8%,transparent);
+color:var(--dsw-alias-label-primary,#1f2328)}
+.pyr-note.is-error{border-color:color-mix(in srgb,var(--dsw-alias-state-error-primary,#e5484d) 40%,transparent);
+background:color-mix(in srgb,var(--dsw-alias-state-error-primary,#e5484d) 8%,transparent)}
+.pyr-empty{flex:1 1 auto;display:flex;flex-direction:column;align-items:center;justify-content:center;
+gap:6px;padding:32px 24px;text-align:center;color:var(--dsw-alias-label-secondary,#6b7280);font-size:12.5px;line-height:1.7}
+.pyr-empty-badge{display:grid;place-items:center;width:48px;height:48px;margin-bottom:6px;border-radius:14px;
+color:var(--dsw-alias-brand-primary,#4d9fff);
+background:color-mix(in srgb,var(--dsw-alias-brand-primary,#4d9fff) 10%,transparent);
+border:1px solid color-mix(in srgb,var(--dsw-alias-brand-primary,#4d9fff) 22%,transparent)}
+.pyr-empty strong{color:var(--dsw-alias-label-primary,#1f2328);font-size:13px}
+.pyr-kbd{display:inline-block;padding:0 5px;margin:0 1px;border-radius:4px;font-family:ui-monospace, SFMono-Regular, Consolas, "Courier New", monospace;font-size:11px;
+color:var(--dsw-alias-label-secondary,#6b7280);background:var(--dsw-alias-bg-layer-2,rgba(127,127,127,.12))}
+.pyr-upper{display:flex;flex:1 1 auto;min-height:0}
+.pyr-edit{display:flex;flex-direction:column;flex:1 1 auto;min-width:0;min-height:0}
+.pyr-aside{flex:0 0 auto;width:296px;max-width:46%;display:flex;flex-direction:column;overflow:auto;
+border-left:1px solid var(--dsw-alias-border-l1,rgba(127,127,127,.18));
+background:var(--dsw-alias-bg-layer-1,rgba(127,127,127,.03))}
+.pyr-sec{flex:0 0 auto;border-bottom:1px solid var(--dsw-alias-border-l1,rgba(127,127,127,.12))}
+.pyr-sec h4{margin:0;display:flex;align-items:center;gap:6px;padding:6px 10px 3px;font-size:10.5px;font-weight:700;
+letter-spacing:.07em;text-transform:uppercase;color:var(--dsw-alias-label-secondary,#6b7280)}
+.pyr-sec-body{padding:0 4px 7px;max-height:230px;overflow-y:auto;overflow-x:hidden}
+.pyr-frame{display:flex;align-items:baseline;gap:6px;width:100%;padding:3px 7px;border:none;border-radius:6px;
+background:transparent;color:inherit;font:inherit;font-size:11.5px;text-align:left;cursor:pointer}
+.pyr-frame:hover{background:var(--dsw-alias-bg-layer-2,rgba(127,127,127,.12))}
+.pyr-frame.is-active{background:color-mix(in srgb,var(--dsw-alias-brand-primary,#4d9fff) 15%,transparent)}
+.pyr-frame .pyr-where{flex:1 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pyr-frame .pyr-line{font-variant-numeric:tabular-nums;color:var(--dsw-alias-label-secondary,#6b7280);font-size:10.5px}
+.pyr-var{display:flex;align-items:baseline;gap:6px;width:100%;box-sizing:border-box;padding:2px 7px;border:none;border-radius:5px;
+background:transparent;color:inherit;font-family:ui-monospace, SFMono-Regular, Consolas, "Courier New", monospace;font-size:11.5px;text-align:left}
+.pyr-var.is-ref{cursor:pointer}
+.pyr-var.is-ref:hover{background:var(--dsw-alias-bg-layer-2,rgba(127,127,127,.12))}
+.pyr-var .pyr-k{color:var(--dsw-alias-label-secondary,#6b7280);flex:0 0 auto}
+.pyr-var .pyr-v{flex:1 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pyr-var .pyr-t{color:var(--dsw-alias-label-secondary,#6b7280);font-size:10px;flex:0 0 auto}
+.pyr-var.is-error .pyr-v{color:var(--dsw-alias-state-error-primary,#e5484d)}
+.pyr-sec-empty{padding:1px 10px 6px;font-size:11.5px;color:var(--dsw-alias-label-secondary,#6b7280)}
+.pyr-watch{display:flex;gap:4px;padding:0 6px 6px}
+.pyr-watch input{flex:1 1 auto;min-width:0;height:24px;padding:0 7px;font:inherit;font-size:11.5px;border-radius:6px;
+font-family:ui-monospace, SFMono-Regular, Consolas, "Courier New", monospace;color:var(--dsw-alias-label-primary,#1f2328);
+background:var(--dsw-alias-bg-layer-2,rgba(127,127,127,.08));
+border:1px solid var(--dsw-alias-border-l1,rgba(127,127,127,.2));outline:none}
+.pyr-watch input:focus{border-color:var(--dsw-alias-brand-primary,#4d9fff)}
+.pyr-debugbar{display:flex;align-items:center;gap:6px;flex-wrap:wrap;flex:0 0 auto;padding:5px 12px;
+border-bottom:1px solid color-mix(in srgb,var(--dsw-alias-brand-primary,#4d9fff) 25%,transparent);
+background:color-mix(in srgb,var(--dsw-alias-brand-primary,#4d9fff) 7%,transparent)}
+.pyr-debugbar .pyr-why{font-size:11.5px;color:var(--dsw-alias-state-error-primary,#e5484d);
+max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pyr-gutter-clip{flex:0 0 auto;overflow:hidden;
+border-right:1px solid var(--dsw-alias-border-l1,rgba(127,127,127,.18));
+background:var(--dsw-alias-bg-layer-1,rgba(127,127,127,.04))}
+.pyr-gutter{padding:0 0 24px;font-family:ui-monospace, SFMono-Regular, Consolas, "Courier New", monospace;font-size:12px;line-height:19px;
+color:var(--dsw-alias-label-secondary,#6b7280);user-select:none}
+.pyr-ln{position:relative;height:19px;line-height:19px;padding-right:9px;text-align:right;cursor:pointer}
+.pyr-ln:hover{background:var(--dsw-alias-bg-layer-2,rgba(127,127,127,.14))}
+.pyr-ln-num{opacity:.78}
+.pyr-ln.is-bp .pyr-ln-num{opacity:1;color:var(--dsw-alias-state-error-primary,#e5484d);font-weight:700}
+.pyr-ln.is-bp::before{content:"";position:absolute;left:5px;top:6px;width:8px;height:8px;border-radius:50%;
+background:var(--dsw-alias-state-error-primary,#e5484d)}
+.pyr-ln.is-cur .pyr-ln-num{opacity:1;color:var(--dsw-alias-brand-primary,#4d9fff);font-weight:700}
+.pyr-cur{position:absolute;left:0;right:0;height:19px;pointer-events:none;z-index:0;
+background:color-mix(in srgb,var(--dsw-alias-state-warn-primary,#ffb86b) 16%,transparent);
+box-shadow:inset 2px 0 0 var(--dsw-alias-state-warn-primary,#ffb86b)}
+  .stage{flex:1;display:flex;flex-direction:column;padding:0}
+</style>
+<div class="stage">
+  <div class="pyr">
+
+    <div class="pyr-bar">
+      <div class="pyr-title">
+        <span class="pyr-dot"></span>
+        <span class="pyr-name">main_etf_down.py</span>
+        <span class="pyr-tag">未保存</span>
+      </div>
+      <select class="pyr-select"><option>Miniconda3 3.13.2</option></select>
+      <span class="pyr-spacer"></span>
+      <span class="pyr-pill is-error"><i></i>已暂停（异常）</span>
+      
+      <button class="pyr-btn pyr-primary" disabled><svg viewBox="0 0 16 16" width="13" height="13"><path d="M5.3 3.1v9.8L13 8z" fill="currentColor"/></svg>运行</button>
+      <button class="pyr-btn" disabled><svg viewBox="0 0 16 16" width="13" height="13"><path d="M8 1.7a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5z" fill="currentColor"/><path d="M6.1 4.3h3.8a1.7 1.7 0 0 1 1.7 1.7v4.2a3.6 3.6 0 1 1-7.2 0V6a1.7 1.7 0 0 1 1.7-1.7z" fill="currentColor"/></svg>调试</button>
+      <button class="pyr-btn pyr-danger"><svg viewBox="0 0 16 16" width="13" height="13"><path d="M4.7 4.7h6.6v6.6H4.7z" fill="currentColor"/></svg>停止</button>
+      <button class="pyr-btn pyr-ghost"><svg viewBox="0 0 16 16" width="13" height="13"><path d="M6.6 11.3 3.6 8.3l1.2-1.2 1.8 1.8 4.6-4.6 1.2 1.2z" fill="currentColor"/></svg>保存</button>
+      <button class="pyr-btn pyr-ghost pyr-btn-icon" title="刷新"><svg viewBox="0 0 16 16" width="13" height="13"><path d="M8 2.4V4.2a3.8 3.8 0 1 1-3.7 4.6l1.7-.4A2.1 2.1 0 1 0 8 6v1.8l3-2.7z" fill="currentColor"/></svg></button>
+    </div>
+    <div class="pyr-debugbar">
+      <button class="pyr-btn pyr-primary"><svg viewBox="0 0 16 16" width="13" height="13"><path d="M4.4 3.1v9.8L11.4 8z" fill="currentColor"/><path d="M11.6 3.1h1.9v9.8h-1.9z" fill="currentColor"/></svg>继续</button>
+      <button class="pyr-btn pyr-ghost"><svg viewBox="0 0 16 16" width="13" height="13"><path d="M8 1.8a2.1 2.1 0 1 1 0 4.2 2.1 2.1 0 0 1 0-4.2z" fill="currentColor"/><path d="M7.2 6.4h1.6v5.2h3.1L8 14.2 4.1 11.6h3.1z" fill="currentColor"/></svg>单步跳过</button>
+      <button class="pyr-btn pyr-ghost"><svg viewBox="0 0 16 16" width="13" height="13"><path d="M8 1.8a2.1 2.1 0 1 1 0 4.2 2.1 2.1 0 0 1 0-4.2z" fill="currentColor"/><path d="M7.2 6.4h1.6v5.2h3.1L8 14.2 4.1 11.6h3.1z" fill="currentColor"/></svg>单步进入</button>
+      <button class="pyr-btn pyr-ghost"><svg viewBox="0 0 16 16" width="13" height="13"><path d="M8 1.8a2.1 2.1 0 1 1 0 4.2 2.1 2.1 0 0 1 0-4.2z" fill="currentColor"/><path d="M7.2 6.2h1.6v5.4h3.1L8 14.2 4.1 11.6h3.1z" fill="currentColor"/></svg>单步跳出</button>
+      <button class="pyr-btn pyr-ghost" disabled><svg viewBox="0 0 16 16" width="13" height="13"><path d="M4.6 3.3h2.5v9.4H4.6zM8.9 3.3h2.5v9.4H8.9z" fill="currentColor"/></svg>暂停</button>
+      <span class="pyr-spacer"></span>
+      <span class="pyr-why" title="ValueError: no rows for ['510300']">ValueError: no rows for ['510300']</span>
+      <button class="pyr-btn pyr-danger"><svg viewBox="0 0 16 16" width="13" height="13"><path d="M4.7 4.7h6.6v6.6H4.7z" fill="currentColor"/></svg>结束</button>
+    </div>
+    <div class="pyr-main">
+      <div class="pyr-upper">
+        <div class="pyr-edit">
+<div style="flex:1 1 auto;min-height:0;display:flex;overflow:hidden">
+  <div class="pyr-gutter-clip" style="min-width:41px">
+    <div class="pyr-gutter" style="padding:10px 0 24px"><div class="pyr-ln"><span class="pyr-ln-num">1</span></div><div class="pyr-ln"><span class="pyr-ln-num">2</span></div><div class="pyr-ln"><span class="pyr-ln-num">3</span></div><div class="pyr-ln"><span class="pyr-ln-num">4</span></div><div class="pyr-ln"><span class="pyr-ln-num">5</span></div><div class="pyr-ln"><span class="pyr-ln-num">6</span></div><div class="pyr-ln is-bp"><span class="pyr-ln-num">7</span></div><div class="pyr-ln"><span class="pyr-ln-num">8</span></div><div class="pyr-ln"><span class="pyr-ln-num">9</span></div><div class="pyr-ln"><span class="pyr-ln-num">10</span></div><div class="pyr-ln"><span class="pyr-ln-num">11</span></div><div class="pyr-ln is-cur"><span class="pyr-ln-num">12</span></div><div class="pyr-ln"><span class="pyr-ln-num">13</span></div><div class="pyr-ln"><span class="pyr-ln-num">14</span></div><div class="pyr-ln"><span class="pyr-ln-num">15</span></div><div class="pyr-ln"><span class="pyr-ln-num">16</span></div><div class="pyr-ln"><span class="pyr-ln-num">17</span></div></div>
+  </div>
+  <div style="flex:1 1 auto;position:relative;display:flex;overflow:hidden">
+    <div class="pyr-cur" style="top:219px"></div>
+    <pre style="flex:1 1 auto;margin:0;padding:10px 12px;font-family:ui-monospace,Consolas,monospace;font-size:13px;line-height:19px;white-space:pre;overflow:hidden">
+<span style="color:#9b5de5">from</span> <span style="color:#1f8a9c">datetime</span> <span style="color:#9b5de5">import</span> datetime
+<span style="color:#9b5de5">import</span> sqlite3
+<span style="color:#9b5de5">from</span> model_daily_basic <span style="color:#9b5de5">import</span> *
+<span style="color:#9b5de5">from</span> util_show <span style="color:#9b5de5">import</span> *
+<span style="color:#9b5de5">import</span> pandas <span style="color:#9b5de5">as</span> pd
+
+<span style="color:#7f8794;font-style:italic"># etf 抄底研究：把每日收盘价和资金流拼到一起</span>
+<span style="color:#2f6fb0">engine_ts</span> = <span style="color:#2f6fb0">create_engine</span>(<span style="color:#2f9e6f">'mysql+pymysql://user:pw@host/quant'</span>)
+
+
+<span style="color:#9b5de5">def</span> <span style="color:#2f6fb0">list_etf</span>(<span style="color:#1f8a9c">symbols</span>, <span style="color:#1f8a9c">days</span>=<span style="color:#b5741e">60</span>):
+    <span style="color:#7f8794;font-style:italic"># 返回最近 N 天的收盘价</span>
+    sql = <span style="color:#2f9e6f">"""SELECT * FROM etf_basic WHERE code IN ({})"""</span>
+    df = pd.<span style="color:#2f6fb0">read_sql_query</span>(sql, engine_ts)
+    <span style="color:#9b5de5">if</span> df.<span style="color:#2f6fb0">empty</span>:
+        <span style="color:#9b5de5">raise</span> <span style="color:#1f8a9c">ValueError</span>(<span style="color:#2f9e6f">f"no rows for {symbols}"</span>)
+    <span style="color:#9b5de5">return</span> df.<span style="color:#2f6fb0">tail</span>(days)
+</pre>
+  </div>
+</div></div>
+      <div class="pyr-aside">
+        <div class="pyr-sec">
+          <h4>调用栈</h4>
+          <div class="pyr-sec-body">
+            <button class="pyr-frame is-active" title="C:\Users\17871\Documents\Obsidian Vault\probability\main_etf_down.py"><span class="pyr-where">list_etf  main_etf_down.py</span><span class="pyr-line">:12</span></button>
+            <button class="pyr-frame" title="C:\Users\17871\Documents\Obsidian Vault\probability\main_etf_down.py"><span class="pyr-where">main  main_etf_down.py</span><span class="pyr-line">:31</span></button>
+            <button class="pyr-frame" title="C:\Users\17871\Documents\Obsidian Vault\probability\main.py"><span class="pyr-where">&lt;module&gt;  main.py</span><span class="pyr-line">:9</span></button>
+          </div>
+        </div>
+        <div class="pyr-sec">
+          <h4>变量</h4>
+          <div class="pyr-sec-body">
+            <div class="pyr-sec-empty">Locals</div>
+            <div class="pyr-var is-ref"><span class="pyr-k">▾ symbols</span><span class="pyr-v">['510300', '510500', '159915', '512100']</span><span class="pyr-t">list</span></div>
+            <div class="pyr-var" style="padding-left:20px"><span class="pyr-k"></span><span class="pyr-k">0</span><span class="pyr-v">'510300'</span><span class="pyr-t">str</span></div>
+            <div class="pyr-var" style="padding-left:20px"><span class="pyr-k"></span><span class="pyr-k">1</span><span class="pyr-v">'510500'</span><span class="pyr-t">str</span></div>
+            <div class="pyr-var is-ref"><span class="pyr-k">▸ df</span><span class="pyr-v">shape=(1284, 9)</span><span class="pyr-t">DataFrame</span></div>
+            <div class="pyr-var"><span class="pyr-k">days</span><span class="pyr-v">60</span><span class="pyr-t">int</span></div>
+            <div class="pyr-var"><span class="pyr-k">sql</span><span class="pyr-v">'SELECT * FROM etf_basic WHERE …'</span><span class="pyr-t">str</span></div>
+          </div>
+        </div>
+        <div class="pyr-sec">
+          <h4>监视</h4>
+          <div class="pyr-watch"><input placeholder="表达式，回车添加" value="len(df)"></div>
+          <div class="pyr-sec-body">
+            <div class="pyr-var"><span class="pyr-k">× len(df)</span><span class="pyr-v">1284</span></div>
+            <div class="pyr-var is-error"><span class="pyr-k">× df.missing_col</span><span class="pyr-v">AttributeError: 'DataFrame' object has no attribute 'missing_col'</span></div>
+          </div>
+        </div>
+      </div>
+      </div>
+      <div class="pyr-logbar">
+        <span>运行日志</span>
+        <span class="pyr-file">main_etf_down.py</span>
+        <span class="pyr-spacer"></span>
+        <span class="pyr-file">python.exe</span>
+        <button class="pyr-btn pyr-ghost">清空</button>
+        <button class="pyr-btn pyr-ghost">复制</button>
+      </div>
+      <div class="pyr-log"><span style="color:#8b93a1">python -Xfrozen_modules=off -m debugpy.adapter</span>
+<span>python -u main_etf_down.py</span>
+<span style="color:#2f9e6f">[12:04:31] loading etf_basic ... 1284 rows</span>
+<span style="color:#8b93a1">断点命中：main_etf_down.py:7</span>
+<span style="color:#2f9e6f">[12:04:33] loading etf_daily ... 512880 rows</span>
+<span style="color:#8b93a1">单步：main_etf_down.py:12</span></div>
+    </div>
+  </div>
+</div>

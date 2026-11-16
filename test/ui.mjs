@@ -175,5 +175,92 @@ const viewerTitle = nodesOf(viewerTree, (n) => n.props.className === 'pyr-title'
 check('viewer mode keeps the title block', viewerTitle !== undefined)
 check('viewer mode shows a fallback name until the file loads', textOf(viewerTitle).includes('Python 运行器'), textOf(viewerTitle))
 
+// ── debugger chrome ──────────────────────────────────────────────────────
+check('no debug bar while idle', nodesOf(tree, (n) => n.props.className === 'pyr-debugbar').length === 0)
+check('no debug side panel while idle', nodesOf(tree, (n) => n.props.className === 'pyr-aside').length === 0)
+check('no gutter rows before a file is opened', nodesOf(tree, (n) => n.props.className === 'pyr-ln').length === 0)
+
+// Drive the session the way a real debug session does, then render again:
+// the stub useState re-reads controller.get() on every render.
+const controller = moduleExports.controllers.get('s1')
+check('the tab render registered a controller', controller !== undefined)
+const PY = 'C:\\ws\\demo.py'
+controller.patch({
+  file: PY,
+  content: 'def area(w, h):\n    return w * h\n\ntotal = 0\nprint(total)\n',
+  baseContent: 'def area(w, h):\n    return w * h\n\ntotal = 0\nprint(total)\n',
+  breakpoints: { [PY]: [2] },
+  debug: {
+    id: 'dbg-1',
+    status: 'paused',
+    reason: 'exception',
+    threadId: 1,
+    file: PY,
+    line: 4,
+    exception: { description: 'ValueError: no rows', text: 'ValueError' },
+    hasDebugpy: true,
+    version: '1.8.22',
+  },
+  frames: [
+    { id: 7, name: 'area', line: 2, source: { path: PY } },
+    { id: 3, name: '<module>', line: 4, source: { path: PY } },
+  ],
+  frameId: 7,
+  scopes: [{ name: 'Locals', variablesReference: 1000 }],
+  variables: { 1000: [{ name: 'w', value: '3', type: 'int', variablesReference: 0 }] },
+  watches: ['w * 2'],
+  watchValues: [{ value: '6' }],
+})
+
+const pausedTree = renderTab()
+const debugBar = nodesOf(pausedTree, (n) => n.props.className === 'pyr-debugbar')
+check('debug bar appears while debugging', debugBar.length === 1, String(debugBar.length))
+const dbgButtons = flatten(debugBar[0].children).filter((n) => typeof n === 'object' && n.tag === 'button')
+check(
+  'debug bar has continue / three steps / pause / end',
+  dbgButtons.length === 6,
+  dbgButtons.map((b) => textOf(b)).join(','),
+)
+check('continue is the filled primary', dbgButtons[0].props.className.includes('pyr-primary'), dbgButtons[0].props.className)
+check('continue is enabled while paused', dbgButtons[0].props.disabled !== true)
+check('pause is disabled while paused', dbgButtons[4].props.disabled === true)
+check('end button ends the session', dbgButtons[5].props.className.includes('pyr-danger'), dbgButtons[5].props.className)
+
+const pausedPill = nodesOf(pausedTree, (n) => typeof n.props.className === 'string' && n.props.className.startsWith('pyr-pill'))[0]
+check('pill reports the pause state', textOf(pausedPill).includes('已暂停'), textOf(pausedPill))
+check('pill uses the error tone for an exception stop', pausedPill.props.className.includes('is-error'), pausedPill.props.className)
+
+const aside = nodesOf(pausedTree, (n) => n.props.className === 'pyr-aside')
+check('debug side panel appears', aside.length === 1)
+const sections = nodesOf(aside[0], (n) => n.tag === 'h4').map((n) => textOf(n))
+check('side panel lists stack / variables / watch', sections.join('|') === '调用栈|变量|监视', sections.join('|'))
+const frameRows = nodesOf(pausedTree, (n) => typeof n.props.className === 'string' && n.props.className.startsWith('pyr-frame'))
+check('renders one row per stack frame', frameRows.length === 2, String(frameRows.length))
+check('the selected frame is highlighted', frameRows[0].props.className.includes('is-active'), frameRows[0].props.className)
+check('frame rows show name and line', textOf(frameRows[0]).includes('area') && textOf(frameRows[0]).includes(':2'), textOf(frameRows[0]))
+check('variables come from the scope reference', textOf(pausedTree).includes('w3int'), textOf(pausedTree).slice(0, 80))
+check('watch rows render the evaluated value', textOf(pausedTree).includes('× w * 2') && textOf(pausedTree).includes('6'))
+
+const bpRows = nodesOf(pausedTree, (n) => typeof n.props.className === 'string' && n.props.className.includes('is-bp'))
+check('breakpoint row is marked in the gutter', bpRows.length === 1, String(bpRows.length))
+const curRows = nodesOf(pausedTree, (n) => typeof n.props.className === 'string' && n.props.className.includes('is-cur'))
+check('current line is marked in the gutter', curRows.length === 1, String(curRows.length))
+const curBand = nodesOf(pausedTree, (n) => n.props.className === 'pyr-cur')
+check('current line band is positioned by line height', curBand.length === 1 && curBand[0].props.style.top === 10 + 3 * 19, curBand[0] && String(curBand[0].props.style.top))
+check('gutter rows are clickable to toggle a breakpoint', typeof bpRows[0].props.onClick === 'function')
+
+// A missing debugpy must be explained, with an install button.
+controller.patch({
+  debug: Object.assign({}, controller.get().debug, { hasDebugpy: false, id: '', status: 'idle' }),
+  frames: [],
+  scopes: [],
+})
+const noDebugpy = renderTab()
+const note = nodesOf(noDebugpy, (n) => n.props.className === 'pyr-note')
+check('missing debugpy is explained', note.length === 1 && textOf(note[0]).includes('debugpy'), String(note.length))
+const installBtn = nodesOf(note[0], (n) => n.tag === 'button')[0]
+check('install button is offered', installBtn !== undefined && textOf(installBtn).includes('安装 debugpy'), installBtn && textOf(installBtn))
+check('debug button is disabled without debugpy', nodesOf(noDebugpy, (n) => n.props.className === 'pyr-debugbar').length === 0)
+
 console.log('\n' + passed + ' passed, ' + failed + ' failed')
 process.exit(failed === 0 ? 0 : 1)

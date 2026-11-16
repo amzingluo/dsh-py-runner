@@ -191,6 +191,96 @@ function readStream(response, untilText, timeoutMs = 30000) {
   check('finished run replays and closes', text.includes('42'), text.slice(0, 300))
 }
 
+// ── debug: breakpoints, stepping, variables (needs debugpy) ─────────────
+writeFileSync(
+  join(workspace, 'dbgme.py'),
+  [
+    'def area(w, h):',
+    '    return w * h',
+    '',
+    'def main():',
+    '    total = 0',
+    '    for i in range(3):',
+    '        total += area(i + 2, 3)',
+    '    print("total", total)',
+    '',
+    'main()',
+    '',
+  ].join('\n'),
+  'utf8',
+)
+
+{
+  const capability = await post('debug/check', { cwd: workspace })
+  const caps = capability.body.result || {}
+  check('debug/check reports the interpreter', capability.body.ok === true && typeof caps.python === 'string', JSON.stringify(capability.body).slice(0, 200))
+
+  if (!caps.installed) {
+    console.log('SKIP  debug routes (this interpreter has no debugpy)')
+  } else {
+    const started = await post('debug/start', {
+      cwd: workspace,
+      path: 'dbgme.py',
+      python: caps.python,
+      breakpoints: { 'dbgme.py': [7] },
+      filters: [],
+    })
+    check('debug/start opens a session', started.body.ok === true && typeof started.body.result?.id === 'string', JSON.stringify(started.body).slice(0, 300))
+    const dbgId = started.body.result?.id
+
+    const stream = await fetch(`${origin}${API_PREFIX}/events?id=${dbgId}&from=0`)
+    check('debug session streams', stream.status === 200, String(stream.status))
+    const text = await readStream(stream, '"event":"stopped"', 40000)
+    check('debug stream reports the breakpoint stop', text.includes('"event":"stopped"'), text.slice(0, 400))
+
+    const stack = await post('debug/command', { id: dbgId, command: 'stackTrace', args: { threadId: 1, startFrame: 0, levels: 5 } })
+    const frames = stack.body.result?.body?.stackFrames || []
+    check('debug/command returns a stack trace', frames[0]?.name === 'main' && frames[0]?.line === 7, JSON.stringify(frames[0] || {}).slice(0, 200))
+
+    const step = await post('debug/command', { id: dbgId, command: 'next', args: { threadId: 1 } })
+    check('debug/command accepts step over', step.body.ok === true && step.body.result?.ok === true, JSON.stringify(step.body).slice(0, 200))
+
+    const clear = await post('debug/breakpoints', { cwd: workspace, id: dbgId, path: 'dbgme.py', lines: [] })
+    check('debug/breakpoints can clear a file', clear.body.ok === true, JSON.stringify(clear.body).slice(0, 200))
+
+    const cont = await post('debug/command', { id: dbgId, command: 'continue', args: { threadId: 1 } })
+    check('debug/command accepts continue', cont.body.ok === true && cont.body.result?.ok === true, JSON.stringify(cont.body).slice(0, 200))
+
+    const end = await readStream(await fetch(`${origin}${API_PREFIX}/events?id=${dbgId}&from=0`), '"type":"exit"', 40000)
+    check('debug session ends with exit', end.includes('"type":"exit"'), end.slice(-300))
+    check('debug session logged program output', end.includes('total'), end.slice(-600))
+
+    const reply = await post('debug/command', { id: dbgId, command: 'nonsense', args: {} })
+    check('debug/command rejects unknown commands', reply.body.ok === false && /不支持/.test(reply.body.error), JSON.stringify(reply.body).slice(0, 200))
+
+    const escape = await post('debug/start', { cwd: workspace, path: '..\\..\\windows\\win.ini' })
+    check('debug/start refuses paths outside the workspace', escape.body.ok === false && /不在工作区/.test(escape.body.error), JSON.stringify(escape.body).slice(0, 200))
+
+    const missing = await post('debug/command', { id: 'dbg-nope', command: 'threads', args: {} })
+    check('debug/command reports an unknown session', missing.body.ok === false && /找不到/.test(missing.body.error), JSON.stringify(missing.body).slice(0, 200))
+  }
+}
+
+// ── debug: missing debugpy is a clear error, not a crash ────────────────
+{
+  const bundled = join(
+    process.env.USERPROFILE || '',
+    '.dsh',
+    'dsh-runtimes',
+    'dsh-primary-runtime',
+    'dependencies',
+    'python',
+    'python.exe',
+  )
+  const plain = existsSync(bundled) ? bundled : ''
+  if (plain === '') {
+    console.log('SKIP  missing-debugpy path (no bundled interpreter found)')
+  } else {
+    const result = await post('debug/start', { cwd: workspace, path: 'dbgme.py', python: plain })
+    check('debug/start explains a missing debugpy', result.body.ok === false && /debugpy/.test(result.body.error), JSON.stringify(result.body).slice(0, 300))
+  }
+}
+
 // ── error handling ──────────────────────────────────────────────────────
 {
   const missing = await post('run', { cwd: workspace, path: 'nope.py' })
